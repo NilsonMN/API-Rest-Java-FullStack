@@ -10,7 +10,15 @@ $(document).ready(function () {//funcion anonima que se pasa como argumento al J
                     //convierte la tabla HTML estandar a INTERACTIVA con las funcionalidades de DataTables
 });
 
+/*
+Funcion asicrona que permite usar AWAIT
+para el manejo de operaciones asincronas
+como solicitudes de red
+ */
 async function cargarUsuarios() {
+    //fetch para realizar una solicitud GET a la URL -> usuarios
+    //await esperar hasta que la consulta se complete antes de continuar
+    //tambien espera contenido en formato JSON
     const request = await fetch("usuarios", {
         method: 'GET',
         headers: {
@@ -18,18 +26,24 @@ async function cargarUsuarios() {
             'Content-Type': 'application/json'
         }
     });
+    /*
+    recibe la respuesta de la solicitud, extra contenido del JSON
+    se usa await nuevamente para esperar la conversion a JSON
+     */
     const usuarios = await request.json();
-
+    //cadena vacia que construirar HTML de la tabla usuarios
     let listadoHtml = '';
-
+    //iterara cada objeto de la lista usuarios
     for (let usuario of usuarios) {
+        //para cada usuario se construye HTML
         let userHtml = '<tr><td>' + usuario.id + '</td><td>' + usuario.nombre + ' ' + usuario.apellido + '</td><td>'
             + usuario.email + '</td><td>' + usuario.telefono
             + '</td><td><a href="#" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td></tr>';
+        //filas generadas
         listadoHtml += userHtml;
     }
-
     console.log(usuarios);
-
+    //seleccionar TBODY de la tabla con ID #usuarios
+    //y reemplaza el contenido con el nuevo HTML generado
     document.querySelector('#usuarios tbody').outerHTML = listadoHtml;
 }
