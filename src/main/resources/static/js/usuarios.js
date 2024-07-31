@@ -19,7 +19,7 @@ async function cargarUsuarios() {
     //fetch para realizar una solicitud GET a la URL -> usuarios
     //await esperar hasta que la consulta se complete antes de continuar
     //tambien espera contenido en formato JSON
-    const request = await fetch("usuarios", {
+    const request = await fetch("api/usuarios", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
