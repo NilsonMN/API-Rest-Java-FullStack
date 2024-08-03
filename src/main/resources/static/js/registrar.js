@@ -30,6 +30,6 @@ async function registrarUsuarios() {
         },
         body: JSON.stringify(datos)
     });
-    const usuarios = await request.json();
-
+    alert("La cuenta fue creada con exito")
+    window.location.href = "login.html";
 }
