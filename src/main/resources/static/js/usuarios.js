@@ -8,7 +8,13 @@ $(document).ready(function () {//funcion anonima que se pasa como argumento al J
     cargarUsuarios();//llamada a la funcion
     $('#usuarios').DataTable();//selecciona elemento HTML con ID "usuarios"
                     //convierte la tabla HTML estandar a INTERACTIVA con las funcionalidades de DataTables
+    actualizarEmailUsuario();
 });
+
+function actualizarEmailUsuario() {
+    document.getElementById('txt-email-usuario')
+        .outerHTML = localStorage.email;
+}
 
 /*
 Funcion asicrona que permite usar AWAIT
@@ -21,10 +27,7 @@ async function cargarUsuarios() {
     //tambien espera contenido en formato JSON
     const request = await fetch("api/usuarios", {
         method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        headers: getHeaders()
     });
     /*
     recibe la respuesta de la solicitud, extra contenido del JSON
@@ -53,6 +56,17 @@ async function cargarUsuarios() {
     document.querySelector('#usuarios tbody').outerHTML = listadoHtml;
 }
 
+function getHeaders() {
+    let token = localStorage.token;
+    console.log("Token enviado: " + token);  // Añade este log
+
+    return {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': token
+    };
+}
+
 async function eliminarUsuario(id) {
 
     if(!confirm("¿Desea eliminar este usuario?")){
@@ -61,10 +75,7 @@ async function eliminarUsuario(id) {
 
     const request = await fetch('api/usuarios/' + id, {
         method: 'DELETE',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        headers: getHeaders()
     });
 
     document.location.reload();
